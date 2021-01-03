@@ -104,7 +104,7 @@ func FileSystemSort(c Config) error {
 	if c.Action == LinkAction && c.Overwrite {
 		return errors.New("Link is already specified, Overwrite won't do anything")
 	}
-	if c.Action == CopyAndDiscardAction && !c.DiscardDir {
+	if c.Action == CopyAndDiscardAction && c.DiscardDir == "" {
 		return errors.New("DiscardDir is mandatory for copyDiscard action")
 	}
 	switch c.Action {
@@ -365,7 +365,7 @@ func (fs *fsSort) action(src, dst string) error {
 	case LinkAction:
 		return link(src, dst, fs.linkType)
 	case CopyAndDiscardAction:
-		er := copy(src, dst)
+		err := copy(src, dst)
 		if err != nil {
 			return err
 		}
