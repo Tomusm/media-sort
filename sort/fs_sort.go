@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/fatih/color"
-	mediasearch "github.com/jpillora/media-sort/search"
+	mediasearch "github.com/tomusm/media-sort/search"
 	"github.com/jpillora/sizestr"
 	"gopkg.in/fsnotify.v1"
 )

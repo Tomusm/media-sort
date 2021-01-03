@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	mediasearch "github.com/jpillora/media-sort/search"
+	mediasearch "github.com/tomusm/media-sort/search"
 )
 
 func TestPathParse(t *testing.T) {

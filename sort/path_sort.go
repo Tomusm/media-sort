@@ -9,7 +9,7 @@ import (
 	"strings"
 	"text/template"
 
-	mediasearch "github.com/jpillora/media-sort/search"
+	mediasearch "github.com/tomusm/media-sort/search"
 )
 
 //Sort the given path, creates a search query,
