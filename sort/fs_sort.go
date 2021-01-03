@@ -25,7 +25,7 @@ type Config struct {
 	MovieDir          string   `opts:"help=movie base directory (defaults to current directory)"`
 	PathConfig        `mode:"embedded"`
 	Extensions        string        `opts:"help=types of files that should be sorted"`
-	DiscardDir        string    `opts:"help=discarded items directory. Useful only for copyDiscard action. After being copied to destination, item is moved to discardDir to be marked as processed"`
+	DiscardDir        string    `opts:"help=discarded items directory. Useful only for copyDiscard action. After being copied to destination item is moved to discardDir to be marked as processed"`
 	Concurrency       int           `opts:"help=search concurrency [warning] setting this too high can cause rate-limiting errors"`
 	FileLimit         int           `opts:"help=maximum number of files to search"`
 	NumDirs           int           `opts:"help=number of directories to include in search (default 0 where -1 means all dirs)"`
