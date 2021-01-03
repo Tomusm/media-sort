@@ -371,7 +371,7 @@ func (fs *fsSort) action(src, dst string) error {
 		}
 
 		_, filename = filepath.Split(dst)
-		return move(src, filepath.Join(fs.DiscardDir, filename)
+		return move(src, filepath.Join(fs.DiscardDir, filename))
 	}
 	return errors.New("unknown action")
 }
