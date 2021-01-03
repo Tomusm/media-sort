@@ -370,7 +370,8 @@ func (fs *fsSort) action(src, dst string) error {
 			return err
 		}
 
-		return move(src, fs.DiscardDir)
+		_, filename = filepath.Split(dst)
+		return move(src, filepath.Join(fs.DiscardDir, filename)
 	}
 	return errors.New("unknown action")
 }
