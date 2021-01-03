@@ -23,6 +23,7 @@ type Config struct {
 	Targets           []string `opts:"mode=arg,min=1"`
 	TVDir             string   `opts:"help=tv series base directory (defaults to current directory)"`
 	MovieDir          string   `opts:"help=movie base directory (defaults to current directory)"`
+	DiscardDir        string    `opts:"help=discarded items directory. Useful only for copyDiscard action. After being copied to destination, item is moved to discardDir to be marked as processed"`
 	PathConfig        `mode:"embedded"`
 	Extensions        string        `opts:"help=types of files that should be sorted"`
 	Concurrency       int           `opts:"help=search concurrency [warning] setting this too high can cause rate-limiting errors"`
@@ -34,7 +35,7 @@ type Config struct {
 	DryRun            bool          `opts:"help=perform sort but don't actually move any files"`
 	SkipHidden        bool          `opts:"help=skip dot files"`
 	SkipSubs          bool          `opts:"help=skip subtitles (srt files)"`
-	Action            Action        `opts:"help=filesystem action used to sort files (copy|link|move)"`
+	Action            Action        `opts:"help=filesystem action used to sort files (copy|link|move|copyDiscard)"`
 	HardLink          bool          `opts:"help=use hardlinks instead of symlinks (forces --action link)"`
 	Overwrite         bool          `opts:"help=overwrites duplicates"`
 	OverwriteIfLarger bool          `opts:"help=overwrites duplicates if the new file is larger"`
@@ -73,6 +74,8 @@ const (
 	LinkAction Action = "link"
 	// CopyAction sorts by copying
 	CopyAction Action = "copy"
+	// Copies and store the succeded items away
+	CopyAndDiscardAction Action = "copyDiscard"
 )
 
 type linkType string
@@ -101,8 +104,11 @@ func FileSystemSort(c Config) error {
 	if c.Action == LinkAction && c.Overwrite {
 		return errors.New("Link is already specified, Overwrite won't do anything")
 	}
+	if c.Action == CopyAndDiscardAction && !c.DiscardDir {
+		return errors.New("DiscardDir is mandatory for copyDiscard action")
+	}
 	switch c.Action {
-	case MoveAction, LinkAction, CopyAction:
+	case MoveAction, LinkAction, CopyAction, CopyAndDiscardAction:
 		break
 	default:
 		return errors.New("Provided action is not available")
@@ -358,6 +364,13 @@ func (fs *fsSort) action(src, dst string) error {
 		return copy(src, dst)
 	case LinkAction:
 		return link(src, dst, fs.linkType)
+	case CopyAndDiscardAction:
+		er := copy(src, dst)
+		if err != nil {
+			return err
+		}
+
+		return move(src, fs.DiscardDir)
 	}
 	return errors.New("unknown action")
 }
