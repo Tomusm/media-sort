@@ -1,4 +1,4 @@
-module github.com/jpillora/media-sort
+module github.com/tomusm/media-sort
 
 go 1.13
 
