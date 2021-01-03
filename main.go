@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	mediasort "github.com/jpillora/media-sort/sort"
+	mediasort "github.com/tomusm/media-sort/sort"
 	"github.com/jpillora/opts"
 	"github.com/jpillora/sizestr"
 )
